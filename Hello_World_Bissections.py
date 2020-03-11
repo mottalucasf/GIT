@@ -28,7 +28,7 @@ if f(a)*f(b)<0:
                 b = xi
             else:
                 a = xi
-    print("Valor da raiz é:", xi)
+    print("O Valor da raiz é:", xi)
 else:
     print("não há raiz neste intervalo")
 
