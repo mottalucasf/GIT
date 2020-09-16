@@ -5,20 +5,7 @@
 #------------------------
 
 import numpy as np
-import time as tm
 
-start = tm.time()
-
-# Function
-def f(x):
-    return 1/(1+x**2)
-f_x = '1/(1+x**2)'
-# Interval
-a, b = -5, 5
-
-# Tolerance
-epsilon = 1.0e-8
-MaxIter = 50
 
 def trapz(a, b, f, t, i):
     '''Parameters: 
@@ -37,10 +24,11 @@ def trapz(a, b, f, t, i):
 
 
 
-def romberg(a, b, epsilon, MaxIter, f):
+def romberg(a, b, f, epsilon=1.0e-8, MaxIter=50):
     '''Parameters: 
         a, b : Points Extrems;   epsilon, MaxIter : Tolerance
         f : integral function        
+        
         Return: Romberg Table in array and a bollian value for the convergence of the method'''
     convergence = True
     TR = np.zeros((MaxIter, MaxIter), dtype=float)
@@ -60,32 +48,17 @@ def romberg(a, b, epsilon, MaxIter, f):
 
 
 
-def integral(a, b, epsilon, MaxIter, f):
+def integral(a, b, f, epsilon=1.0e-8, MaxIter=50):
     '''Parameters: 
         a, b : Points Extrems;   epsilon, MaxIter : Tolerance
         f : integral function        
-        Return: Value of '''
-    table = romberg(a, b, epsilon, MaxIter, f)[0]
+       
+        Return: Integral value obtained by the Romberg method'''
+    table = romberg(a, b, f, epsilon, MaxIter)[0]
     n = len(table)
-    romber_converg_1 = romberg(a, b, epsilon, MaxIter, f)[1]
-    if romber_converg_1:
-        print('Step \t StepSize \t Results')
-        for i in range(n):
-            print('%d \t %f \t'  % (2**i, 1/2**i), end="")
-            for k in range(i+1):
-                print(' %f \t' % table[i,k], end="")
-            print()
-        print()
-        print('The approximate value of the integral is', table[n-1,n-1], 'with', n, 'iterations/rows')
-        print()
-    else:
-        print("Romberg's method exceeded", MaxIter ,"lines")
+    if romberg(a, b, f, epsilon, MaxIter)[1]:
+       return table[n-1 , n-1]
 
-print('Approximating the value of \int_{',a,'}{',b,'}[',f_x,'] by Romberg')
-integral(a, b, epsilon, MaxIter, f)
 
-end = tm.time()
-time_trapz = end - start
-print("Tempo de Execução", time_trapz)
 
 
